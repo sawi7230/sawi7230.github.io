@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<title>kawaii nihon mapu</title>
+		<meta http-equiv="Content-Type"
+			  content="text/html;charset=ISO-8859-1">
+	</head>
+
+	<body>
+		<header id="header">kawaii nihon mapu: Tokyo</header>
+		<div id="wrapper">
+			<div id="detail-info">
+				<p data-bind="ko.fourSquareData text: name"></p>
+				<p data-bind="ko.fourSquareData text: category"></p>
+				<p data-bind="ko.fourSquareData text: address"></p>
+				<img id="image" data-bind="ko.fourSquareData attr: { src: imageUrl, alt: name }"></img>
+			</div>
+			<div id="sidebar">
+				<h4>Filter by category</h4>
+				<ul>
+					<li>
+						<a href="#" data-bind="click: removeFilter">all</a>
+					</li>
+					<!-- ko foreach: categories-->
+					<li>
+						<a href="#" data-bind="click: $parent.filterMarkers, text: $data"></a>
+					</li>
+					<!-- /ko -->
+				</ul>
+
+				<hr>
+
+				<ul data-bind="foreach: visibleMarkers">
+					<li>
+						<a href="#" data-bind="click: $parent.openNewInfoWindow, text: item.name"></a>
+					</li>
+				</ul>
+
+			</div>
+			<div id="map"></div>
+		</div>
+
+		<script type="text/javascript" src="js/data.js"></script>
+		<script type="text/javascript" src="js/knockout-3.4.2.js"></script>
+		<script type="text/javascript" src="js/markers.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPjv8dB72tsHFRhaNNMXT5w0VmOdtQ0jM&v=3&callback=startMap">
+		</script>
+	</body>
+
+</html>
+
+<!-- Klaus: AIzaSyCPjv8dB72tsHFRhaNNMXT5w0VmOdtQ0jM -->
+<!-- Sara:  AIzaSyB0P-Y7y1suUfOqayW476VSQBFt93-R5-0 -->

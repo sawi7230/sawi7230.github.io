@@ -1,0 +1,43 @@
+body {
+	height: 100vh;
+	width: 100vw;
+	background-color: antiquewhite;
+	margin: auto;
+}
+
+#header {
+	display: block;
+	text-align: center;
+	font-size: 25px;
+	color: antiquewhite;
+	background-color: darkslateblue;
+}
+
+#wrapper {
+	height: 90vh;
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+#map {
+	width: 70%;
+}
+
+#sidebar {
+	width: 30%;
+	padding: 2%;
+	text-align: left;
+	font-size: 22px;
+	color: antiquewhite;
+	background-color: darkslateblue;
+}
+
+#sidebar a {
+	color: antiquewhite;
+	text-decoration: none;
+}
+
+#sidebar a:hover {
+	color: purple;
+}
