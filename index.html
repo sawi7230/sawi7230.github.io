@@ -10,12 +10,6 @@
 	<body>
 		<header id="header">kawaii nihon mapu: Tokyo</header>
 		<div id="wrapper">
-			<div id="detail-info">
-				<p data-bind="ko.fourSquareData text: name"></p>
-				<p data-bind="ko.fourSquareData text: category"></p>
-				<p data-bind="ko.fourSquareData text: address"></p>
-				<img id="image" data-bind="ko.fourSquareData attr: { src: imageUrl, alt: name }"></img>
-			</div>
 			<div id="sidebar">
 				<h4>Filter by category</h4>
 				<ul>
@@ -33,7 +27,7 @@
 
 				<ul data-bind="foreach: visibleMarkers">
 					<li>
-						<a href="#" data-bind="click: $parent.openNewInfoWindow, text: item.name"></a>
+						<a href="#" data-bind="click: $parent.openInfoWindow, text: item.name"></a>
 					</li>
 				</ul>
 

@@ -2,12 +2,19 @@ function OkiiFunction() {
 	let self = this;
 
 	this.fourSquareData = ko.observable();
-		let markers = [];
+
+	this.infoContent = ko.observable();
+
+	let markers = [];
 	let infoWindow = new google.maps.InfoWindow();
 	infoWindow.addListener('closeclick', function() {
 		console.log('closeclick!');
 		infoWindow.marker = undefined;
 	});
+	self.infoContent.subscribe((newContent) => {
+		infoWindow.setContent(infoWindow.getContent()+'<br><img id="image" src="'+newContent.imageUrl+'" alt="'+newContent.name+'"></img>')
+	});
+
 	let map = new google.maps.Map(document.getElementById('map'));
 
 	this.openInfoWindow = function() {
@@ -15,8 +22,9 @@ function OkiiFunction() {
 		console.log('marker: ' + marker.item.name);
 		if (infoWindow.marker !== marker) {
 			infoWindow.close();
-			infoWindow.setContent(marker.item.name);
 			infoWindow.marker = marker;
+			infoWindow.setContent('<span id="content-name">'+marker.item.name+'</span>');
+			foursquareCall(marker).subscribe(self.infoContent);
 			infoWindow.open(map, marker);
 		}
 	};
@@ -49,24 +57,15 @@ function OkiiFunction() {
 	this.visibleMarkers = ko.observableArray();
 	this.visibleMarkers.push(...markers);
 
-	this.getCategories = function() {
+	let getCategories = function() {
 		let categories = new Set();
 		data.forEach(item => {
 			categories.add(item.category);
 		});
-		return categories;
+		return Array.from(categories);
 	};
 
-	this.categories = Array.from(this.getCategories());
-
-	this.removeFilter = function () {
-		infoWindow.close();
-		self.visibleMarkers.removeAll();
-		markers.forEach((marker) => {
-			marker.setVisible(true);
-		});
-		self.visibleMarkers.push(...markers);
-	};
+	this.categories = getCategories();
 
 	this.filterMarkers = function () {
 		infoWindow.close();
@@ -82,17 +81,36 @@ function OkiiFunction() {
 		});
 	};
 
-	this.getFourSquareData = function () {
-		const prefix = 'https://fastly.4sqi.net/img/general/';
-		const size = '500x500';
-		// ToDo: foursquare-request
-		const detailedInfo = {
-			name: 'Ain Soph.Ginza',
-			category: 'supermarket',
-			address: 'irgendwo in Ginza',
-			imageUrl: prefix + size + '/28544771_GNOhuUDxLW7hfm6mn_omWlC-4YZ-2SH9fxrPB0d7qXg.jpg'
-		};
-		self.fourSquareData = detailedInfo;
+	this.removeFilter = function () {
+		infoWindow.close();
+		self.visibleMarkers.removeAll();
+		markers.forEach((marker) => {
+			marker.setVisible(true);
+		});
+		self.visibleMarkers.push(...markers);
+	};
+
+	const fs_client_id = 'UDXULMCOWB0DUWATTHBCVTSUBW50R3YUV0UEN2KJMGLJ5ER5';
+	const fs_client_secret = 'HNEKZGN5HGZAZEXYOB5UANGFYWT0G11CGI5AXWMF5FMVUEL0';
+
+	let foursquareCall = function(marker, callback) {
+		const requestUri = 'https://api.foursquare.com/v2/venues/'+marker.item.foursquareId+'?client_id='+fs_client_id+'&client_secret='+fs_client_secret+'&v=20180323';
+		const response = ko.observable();
+		fetch(requestUri)
+			.catch(error => {
+				response({name: 'foursquare api not available', imageUrl: ''});
+			})
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(obj) {
+				const venue = obj.response.venue;
+				const prefix = venue.photos.groups[1].items[0].prefix;
+				const suffix = venue.photos.groups[1].items[0].suffix;
+				const size = '100x100';
+				response({name: venue.name, imageUrl: prefix + size + suffix});
+			});
+		return response;
 	}
 
 }
