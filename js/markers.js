@@ -1,7 +1,9 @@
 function OkiiFunction() {
 	let self = this;
 
-	this.fourSquareData = ko.observable();
+	let fs = new Foursquare();
+	fs.categories.subscribe(cats => console.log(JSON.stringify(cats)));
+	fs.places.subscribe(places => console.log(JSON.stringify(places)));
 
 	this.infoContent = ko.observable();
 
@@ -15,7 +17,7 @@ function OkiiFunction() {
 		infoWindow.setContent(infoWindow.getContent()+'<br><img id="image" src="'+newContent.imageUrl+'" alt="'+newContent.name+'"></img>')
 	});
 
-	let map = new google.maps.Map(document.getElementById('map'));
+	let map = new google.maps.Map(document.getElementById('map'), {disableDefaultUI: true, clickableIcons: false});
 
 	this.openInfoWindow = function() {
 		const marker = this;
@@ -107,7 +109,7 @@ function OkiiFunction() {
 				const venue = obj.response.venue;
 				const prefix = venue.photos.groups[1].items[0].prefix;
 				const suffix = venue.photos.groups[1].items[0].suffix;
-				const size = '100x100';
+				const size = '150x150';
 				response({name: venue.name, imageUrl: prefix + size + suffix});
 			});
 		return response;

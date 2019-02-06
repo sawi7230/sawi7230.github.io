@@ -11,32 +11,39 @@
 		<header id="header">kawaii nihon mapu: Tokyo</header>
 		<div id="wrapper">
 			<div id="sidebar">
-				<h4>Filter by category</h4>
-				<ul>
-					<li>
-						<a href="#" data-bind="click: removeFilter">all</a>
-					</li>
-					<!-- ko foreach: categories-->
-					<li>
-						<a href="#" data-bind="click: $parent.filterMarkers, text: $data"></a>
-					</li>
-					<!-- /ko -->
-				</ul>
+				<div id="text-area">
+					<h4>Filter by category</h4>
+					<ul>
+						<li>
+							<a href="#" data-bind="click: removeFilter">all</a>
+						</li>
+						<!-- ko foreach: categories-->
+						<li>
+							<a href="#" data-bind="click: $parent.filterMarkers, text: $data"></a>
+						</li>
+						<!-- /ko -->
+					</ul>
 
-				<hr>
+					<hr>
 
-				<ul data-bind="foreach: visibleMarkers">
-					<li>
-						<a href="#" data-bind="click: $parent.openInfoWindow, text: item.name"></a>
-					</li>
-				</ul>
-
+					<ul data-bind="foreach: visibleMarkers">
+						<li>
+							<a href="#" data-bind="click: $parent.openInfoWindow, text: item.name"></a>
+						</li>
+					</ul>
+				</div>
+				<button id="close-button" onclick="toggleSidebar()">&#x4e09</button>
 			</div>
 			<div id="map"></div>
 		</div>
+		<footer id="footer">
+			<img id="footer-image" src="./img/foursquare-logo.png" alt="powered by foursquare">
+		</footer>
 
-		<script type="text/javascript" src="js/data.js"></script>
 		<script type="text/javascript" src="js/knockout-3.4.2.js"></script>
+		<script type="text/javascript" src="js/menu.js"></script>
+		<script type="text/javascript" src="js/data.js"></script>
+		<script type="text/javascript" src="js/foursquare.js"></script>
 		<script type="text/javascript" src="js/markers.js"></script>
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPjv8dB72tsHFRhaNNMXT5w0VmOdtQ0jM&v=3&callback=startMap">
 		</script>

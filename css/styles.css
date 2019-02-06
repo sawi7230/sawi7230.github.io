@@ -1,6 +1,7 @@
 body {
 	height: 100vh;
-	width: 100vw;
+	width: 98vw;
+	max-width: 1280px;
 	background-color: antiquewhite;
 	margin: auto;
 }
@@ -15,22 +16,32 @@ body {
 
 #wrapper {
 	height: 90vh;
-	width: 100%;
+	width: 98vw;
+	max-width: 1280px;
+	margin: auto;
 	display: flex;
 	flex-wrap: nowrap;
 }
 
 #map {
-	width: 70%;
+	width: 78vw;
+	max-width: 998px;
 }
 
 #sidebar {
-	width: 30%;
+	width: 20vw;
+	max-width: 256px;
+	display: flex;
+	flex-wrap: nowrap;
 	padding: 2%;
 	text-align: left;
 	font-size: 22px;
 	color: antiquewhite;
 	background-color: darkslateblue;
+}
+
+#close-button {
+	display: none;
 }
 
 #sidebar a {
@@ -44,4 +55,67 @@ body {
 
 #content-name {
 	font-size: medium;
+}
+
+#footer {
+	text-align: right;
+}
+
+#footer-image {
+	height: 35px;
+	width: 210px;
+}
+
+@media screen and (max-width: 720px) {
+	body {
+		height: auto;
+		width: 100vw;
+	}
+	#wrapper {
+		position: relative;
+		height: auto;
+		width: auto;
+	}
+
+	h4 {
+		margin: 0;
+		padding: 10px;
+	}
+
+	ul {
+		margin: 0;
+		padding: 10px;
+	}
+
+	#map {
+		height: 75vh;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	#sidebar {
+		width: 100%;
+		padding: 0;
+		z-index: 1;
+		position: absolute;
+		left: -224px;
+		transition: left 500ms;
+	}
+
+	#sidebar.sidebar-open {
+		left: 0;
+	}
+
+	#close-button {
+		display: block;
+		width: 32px;
+		height: 32px;
+		font-size: 25px;
+		margin-top: 7px;
+		background-color: darkslateblue;
+		color: antiquewhite;
+		border-color: darkslateblue;
+	}
 }
