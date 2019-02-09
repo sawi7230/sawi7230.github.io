@@ -100,8 +100,10 @@ body {
 		padding: 0;
 		z-index: 1;
 		position: absolute;
-		left: -224px;
+		left: -220px;
 		transition: left 500ms;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	#sidebar.sidebar-open {
@@ -110,12 +112,44 @@ body {
 
 	#close-button {
 		display: block;
-		width: 32px;
-		height: 32px;
+		width: 40px;
+		height: 40px;
+		right: 10px;
 		font-size: 25px;
-		margin-top: 7px;
+		margin-top: 3px;
 		background-color: darkslateblue;
 		color: antiquewhite;
-		border-color: darkslateblue;
+		border: none;
+	}
+
+	#close-button:focus {
+		outline:0;
+	}
+}
+
+@media screen and (min-width: 721px) {
+	body {
+		height: 100vh;
+		width: 98vw;
+		max-width: 1280px;
+	}
+	#wrapper {
+		height: 90vh;
+		width: 98vw;
+		max-width: 1280px;
+	}
+
+	#map {
+		width: 78vw;
+		max-width: 998px;
+	}
+
+	#sidebar {
+		width: 20vw;
+		max-width: 256px;
+	}
+
+	#close-button {
+		display: none;
 	}
 }

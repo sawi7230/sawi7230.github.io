@@ -1,9 +1,11 @@
 function OkiiFunction() {
 	let self = this;
 
+/*
 	let fs = new Foursquare();
 	fs.categories.subscribe(cats => console.log(JSON.stringify(cats)));
 	fs.places.subscribe(places => console.log(JSON.stringify(places)));
+*/
 
 	this.infoContent = ko.observable();
 
@@ -17,7 +19,7 @@ function OkiiFunction() {
 		infoWindow.setContent(infoWindow.getContent()+'<br><img id="image" src="'+newContent.imageUrl+'" alt="'+newContent.name+'"></img>')
 	});
 
-	let map = new google.maps.Map(document.getElementById('map'), {disableDefaultUI: true, clickableIcons: false});
+	const map = new google.maps.Map(document.getElementById('map'), {disableDefaultUI: true, clickableIcons: false});
 
 	this.openInfoWindow = function() {
 		const marker = this;
@@ -73,23 +75,29 @@ function OkiiFunction() {
 		infoWindow.close();
 		const activeCategory = this;
 		self.visibleMarkers.removeAll();
+		let bounds = new google.maps.LatLngBounds();
 		markers.forEach((marker) => {
 			if (marker.item.category === activeCategory.toString()) {
 				marker.setVisible(true);
+				bounds.extend(marker.getPosition());
 				self.visibleMarkers.push(marker)
 			} else {
 				marker.setVisible(false);
 			}
 		});
+		map.fitBounds(bounds);
 	};
 
 	this.removeFilter = function () {
 		infoWindow.close();
 		self.visibleMarkers.removeAll();
+		let bounds = new google.maps.LatLngBounds();
 		markers.forEach((marker) => {
 			marker.setVisible(true);
+			bounds.extend(marker.getPosition());
 		});
 		self.visibleMarkers.push(...markers);
+		map.fitBounds(bounds);
 	};
 
 	const fs_client_id = 'UDXULMCOWB0DUWATTHBCVTSUBW50R3YUV0UEN2KJMGLJ5ER5';
@@ -100,7 +108,7 @@ function OkiiFunction() {
 		const response = ko.observable();
 		fetch(requestUri)
 			.catch(error => {
-				response({name: 'foursquare api not available', imageUrl: ''});
+				response({name: 'foursquare api not available', imageUrl: 'img/picture-not-available-150x150.jpg'});
 			})
 			.then(function(response) {
 				return response.json();
@@ -117,8 +125,11 @@ function OkiiFunction() {
 
 }
 
+function googleAlert() {
+	alert("GoogleMaps is not reachable :( Please try again later.");
+}
+
 function startMap() {
 	ko.applyBindings(new OkiiFunction());
 }
-
 
