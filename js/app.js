@@ -23,6 +23,8 @@ function ViewModel() {
         if (infoWindow.marker !== marker) {
             infoWindow.close();
             infoWindow.marker = marker;
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout((() => marker.setAnimation(null)), 1000);
             infoWindow.setContent('<span id="content-name">' + marker.item.name + '</span><br><img id="foursquare-image" src="img/loading-150x150.gif" alt="foursquare image">');
             if (infoWindow.pendingCall) {
                 console.log('kill subscription');
@@ -41,7 +43,8 @@ function ViewModel() {
             marker = new google.maps.Marker({
                 position: location,
                 map: map,
-                item: item
+                item: item,
+                animation: google.maps.Animation.DROP
             });
             marker.addListener('click', self.openInfoWindow);
             markers.push(marker);
@@ -58,7 +61,7 @@ function ViewModel() {
             bounds.extend(extendPoint2);
         }
         map.fitBounds(bounds);
-    }
+    };
 
     let initMap = function () {
         let markerBounds = createMarkersFromData();
