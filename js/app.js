@@ -53,7 +53,7 @@ function ViewModel() {
         return bounds;
     };
 
-    let zoomMap = function(bounds) {
+    let zoomMap = function (bounds) {
         if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
             var extendPoint1 = new google.maps.LatLng(bounds.getNorthEast().lat() + 0.001, bounds.getNorthEast().lng() + 0.001);
             var extendPoint2 = new google.maps.LatLng(bounds.getNorthEast().lat() - 0.001, bounds.getNorthEast().lng() - 0.001);
@@ -120,19 +120,19 @@ function ViewModel() {
         const requestUri = 'https://api.foursquare.com/v2/venues/' + marker.item.foursquareId + '?client_id=' + fs_client_id + '&client_secret=' + fs_client_secret + '&v=20180323';
         const response = ko.observable();
         fetch(requestUri)
-            .catch(error => {
-                response({name: 'foursquare api not available', imageUrl: 'img/picture-not-available-150x150.jpg'});
-            })
-            .then(function (response) {
-                return response.json();
-            })
+            .then(function (serverResponse) {
+                if (serverResponse.status !== 200) {
+                    throw 'foursquare api call rejected';
+                }
+                return serverResponse.json();
+            }, error => response({imageUrl: 'img/picture-not-available-150x150.jpg'}))
             .then(function (obj) {
                 const venue = obj.response.venue;
                 const prefix = venue.photos.groups[1].items[0].prefix;
                 const suffix = venue.photos.groups[1].items[0].suffix;
                 const size = '150x150';
                 response({name: venue.name, imageUrl: prefix + size + suffix});
-            });
+            }, error => response({imageUrl: 'img/picture-not-available-150x150.jpg'}));
         return response;
     }
 }
