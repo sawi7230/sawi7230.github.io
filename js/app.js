@@ -1,7 +1,7 @@
 function ViewModel() {
     const self = this;
-    const fs_client_id = 'UDXULMCOWB0DUWATTHBCVTSUBW50R3YUV0UEN2KJMGLJ5ER5';
-    const fs_client_secret = 'HNEKZGN5HGZAZEXYOB5UANGFYWT0G11CGI5AXWMF5FMVUEL0';
+    const fs_client_id = 'XQMDVZJ13CV2QHBVE5P20Q3H2A4I0C4NHL54Z0PQ5KML4WAU';
+    const fs_client_secret = 'WFYXDWVVESIMDLK43MVPKTDDTMTMDPIICHSCPMQ53VK3NL2L';
 
     const infoContent = ko.observable();
     const markers = [];
