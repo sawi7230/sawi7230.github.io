@@ -1,13 +1,21 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
-	height: 100vh;
-	width: 98vw;
-	max-width: 1280px;
+	height: 100%;
+	width: 100%;
 	background-color: antiquewhite;
 	margin: auto;
 }
 
 #header {
-	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 40px;
+	width: 100%;
+	padding-top: 5px;
 	text-align: center;
 	font-size: 25px;
 	color: antiquewhite;
@@ -15,29 +23,28 @@ body {
 }
 
 #wrapper {
-	height: 90vh;
-	width: 98vw;
-	max-width: 1280px;
-	margin: auto;
+	position: fixed;
+	top: 39px;
+	bottom: 30px;
+	width: 100%;
 	display: flex;
 	flex-wrap: nowrap;
-}
-
-#map {
-	width: 78vw;
-	max-width: 998px;
+	overflow: hidden;
 }
 
 #sidebar {
-	width: 20vw;
-	max-width: 256px;
-	display: flex;
-	flex-wrap: nowrap;
-	padding: 2%;
+	width: 256px;
 	text-align: left;
 	font-size: 22px;
 	color: antiquewhite;
 	background-color: darkslateblue;
+	z-index: 1;
+	overflow: auto;
+}
+
+h4 {
+	margin: 0;
+	padding: 10px;
 }
 
 #close-button {
@@ -58,56 +65,51 @@ body {
 }
 
 #footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 30px;
+	width: 100%;
 	text-align: right;
 }
 
 #footer-image {
+	margin-top: -3px;
 	height: 35px;
 	width: 210px;
 }
 
 @media screen and (max-width: 720px) {
-	body {
-		height: auto;
-		width: 100vw;
-	}
-	#wrapper {
-		position: relative;
-		height: auto;
-		width: auto;
-	}
-
-	h4 {
-		margin: 0;
-		padding: 10px;
-	}
-
-	ul {
-		margin: 0;
-		padding: 10px;
-	}
-
 	#map {
-		height: 75vh;
+		height: 100%;
 		width: 100%;
 		position: absolute;
-		top: 0;
 		left: 0;
 	}
 
 	#sidebar {
-		width: 100%;
+		background: linear-gradient(to bottom, rgba(72,61,139,1) 0%,rgba(72,61,139,0.5) 50%,rgba(72,61,139,0.5) 100%);
 		padding: 0;
-		z-index: 1;
 		position: absolute;
 		left: -220px;
 		transition: left 500ms;
-		display: flex;
-		justify-content: space-between;
 	}
 
 	#sidebar.sidebar-open {
 		left: 0;
+	}
+
+	#sidebar-header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	#sidebar ul {
+		margin: 10px 40px 10px 0;
+	}
+
+	#sidebar hr {
+		margin: 0 40px 0 10px;
 	}
 
 	#close-button {
@@ -117,7 +119,7 @@ body {
 		right: 10px;
 		font-size: 25px;
 		margin-top: 3px;
-		background-color: darkslateblue;
+		background-color: rgba(0,0,0,0);
 		color: antiquewhite;
 		border: none;
 	}
@@ -128,25 +130,17 @@ body {
 }
 
 @media screen and (min-width: 721px) {
-	body {
-		height: 100vh;
-		width: 98vw;
-		max-width: 1280px;
-	}
-	#wrapper {
-		height: 90vh;
-		width: 98vw;
-		max-width: 1280px;
-	}
-
 	#map {
-		width: 78vw;
-		max-width: 998px;
+		min-width: 465px;
+		width: auto;
+		flex-shrink: 1;
+		flex-grow: 1;
 	}
 
 	#sidebar {
-		width: 20vw;
-		max-width: 256px;
+		padding: 10px;
+		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
 	#close-button {

@@ -5,34 +5,35 @@
 		<title>kawaii nihon mapu</title>
 		<meta http-equiv="Content-Type"
 			  content="text/html;charset=ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 
 	<body>
 		<header id="header">kawaii nihon mapu: Tokyo</header>
 		<div id="wrapper">
 			<div id="sidebar">
-				<div id="text-area">
+				<div id="sidebar-header">
 					<h4>Filter by category</h4>
-					<ul>
-						<li>
-							<a href="#" data-bind="click: removeFilter">all</a>
-						</li>
-						<!-- ko foreach: categories-->
-						<li>
-							<a href="#" data-bind="click: $parent.filterMarkers, text: $data"></a>
-						</li>
-						<!-- /ko -->
-					</ul>
-
-					<hr>
-
-					<ul data-bind="foreach: visibleMarkers">
-						<li>
-							<a href="#" data-bind="click: $parent.openInfoWindow, text: item.name"></a>
-						</li>
-					</ul>
+					<button id="close-button" onclick="toggleSidebar()">&#x4e09</button>
 				</div>
-				<button id="close-button" onclick="toggleSidebar()">&#x4e09</button>
+				<ul>
+					<li>
+						<a href="#" data-bind="click: removeFilter">all</a>
+					</li>
+					<!-- ko foreach: categories-->
+					<li>
+						<a href="#" data-bind="click: $parent.filterMarkers, text: $data"></a>
+					</li>
+					<!-- /ko -->
+				</ul>
+
+				<hr>
+
+				<ul data-bind="foreach: visibleMarkers">
+					<li>
+						<a href="#" data-bind="click: $parent.openInfoWindow, text: item.name"></a>
+					</li>
+				</ul>
 			</div>
 			<div id="map"></div>
 		</div>
@@ -41,12 +42,10 @@
 		</footer>
 
 		<script type="text/javascript" src="js/knockout-3.4.2.js"></script>
-		<script type="text/javascript" src="js/menu.js"></script>
 		<script type="text/javascript" src="js/data.js"></script>
-		<!--<script type="text/javascript" src="js/foursquare.js"></script>-->
-		<script type="text/javascript" src="js/markers.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
 		<script async defer
-				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPjv8dB72tsHFRhaNNMXT5w0VmOdtQ0jM&v=3&callback=startMap"
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPjv8dB72tsHFRhaNNMXT5w0VmOdtQ0jM&v=3&callback=startApp"
 				onerror="googleAlert()">
 		</script>
 	</body>
