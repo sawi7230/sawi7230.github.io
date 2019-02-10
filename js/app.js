@@ -65,14 +65,13 @@ function ViewModel() {
 
     let initMap = function () {
         let markerBounds = createMarkersFromData();
+        self.visibleMarkers = ko.observableArray();
+        self.visibleMarkers.push(...markers);
         // auto-center to all pins
         zoomMap(markerBounds);
     };
 
     initMap();
-
-    this.visibleMarkers = ko.observableArray();
-    this.visibleMarkers.push(...markers);
 
     let getCategories = function () {
         let categories = new Set();
@@ -114,7 +113,6 @@ function ViewModel() {
         self.visibleMarkers.push(...markers);
         zoomMap(bounds);
     };
-
 
     let foursquareCall = function (marker, callback) {
         const requestUri = 'https://api.foursquare.com/v2/venues/' + marker.item.foursquareId + '?client_id=' + fs_client_id + '&client_secret=' + fs_client_secret + '&v=20180323';
