@@ -3,6 +3,9 @@ function ViewModel() {
     const fs_client_id = 'XQMDVZJ13CV2QHBVE5P20Q3H2A4I0C4NHL54Z0PQ5KML4WAU';
     const fs_client_secret = 'WFYXDWVVESIMDLK43MVPKTDDTMTMDPIICHSCPMQ53VK3NL2L';
 
+
+    const foursquare = new Foursquare();
+
     const infoContent = ko.observable();
     const markers = [];
 
@@ -16,6 +19,9 @@ function ViewModel() {
         document.getElementById('foursquare-image').src = newContent.imageUrl;
     });
 
+
+    this.visibleMarkers = ko.observableArray();
+
     this.openInfoWindow = function () {
         document.getElementById('sidebar').classList.remove('sidebar-open');
         const marker = this;
@@ -25,32 +31,32 @@ function ViewModel() {
             infoWindow.marker = marker;
             marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout((() => marker.setAnimation(null)), 1000);
-            infoWindow.setContent('<span id="content-name">' + marker.item.name + '</span><br><img id="foursquare-image" src="img/loading-150x150.gif" alt="foursquare image">');
-            if (infoWindow.pendingCall) {
-                console.log('kill subscription');
-                infoWindow.pendingCall.dispose();
-            }
-            infoWindow.pendingCall = foursquareCall(marker).subscribe(infoContent);
+            infoWindow.setContent('<span id="content-name">' + marker.item.name + '</span><br><img id="foursquare-image" src="' + marker.item.photo.prefix + '150x150' + marker.item.photo.suffix + '" alt="foursquare image">');
             infoWindow.open(map, marker);
         }
     };
 
     let createMarkersFromData = function () {
-        let bounds = new google.maps.LatLngBounds();
+        const boundsObs = ko.observable();
         let marker;
-        data.forEach(item => {
-            let location = new google.maps.LatLng(item.lat, item.lng);
-            marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                item: item,
-                animation: google.maps.Animation.DROP
+        foursquare.places.subscribe(list => {
+            const bounds = new google.maps.LatLngBounds();
+            list.forEach(item => {
+                let location = new google.maps.LatLng(item.lat, item.lng);
+                marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    item: item,
+                    animation: google.maps.Animation.DROP
+                });
+                marker.addListener('click', self.openInfoWindow);
+                markers.push(marker);
+                bounds.extend(location);
             });
-            marker.addListener('click', self.openInfoWindow);
-            markers.push(marker);
-            bounds.extend(location);
+            self.visibleMarkers.push(...markers);
+            boundsObs(bounds);
         });
-        return bounds;
+        return boundsObs;
     };
 
     let zoomMap = function (bounds) {
@@ -65,10 +71,8 @@ function ViewModel() {
 
     let initMap = function () {
         let markerBounds = createMarkersFromData();
-        self.visibleMarkers = ko.observableArray();
-        self.visibleMarkers.push(...markers);
         // auto-center to all pins
-        zoomMap(markerBounds);
+        markerBounds.subscribe(zoomMap);
     };
 
     initMap();
@@ -81,7 +85,7 @@ function ViewModel() {
         return Array.from(categories);
     };
 
-    this.categories = getCategories();
+    this.categories = foursquare.categories;
 
     this.filterMarkers = function () {
         infoWindow.close();
@@ -90,7 +94,7 @@ function ViewModel() {
         self.visibleMarkers.removeAll();
         let bounds = new google.maps.LatLngBounds();
         markers.forEach((marker) => {
-            if (marker.item.category === activeCategory.toString()) {
+            if (marker.item.category === activeCategory.name) {
                 marker.setVisible(true);
                 bounds.extend(marker.getPosition());
                 self.visibleMarkers.push(marker)

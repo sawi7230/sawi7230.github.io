@@ -79,6 +79,12 @@ h4 {
 	width: 210px;
 }
 
+#foursquare-image {
+	width: 150px;
+	height: 150px;
+	background: transparent url('../img/loading-150x150.gif') center no-repeat;
+}
+
 @media screen and (max-width: 720px) {
 	#map {
 		height: 100%;
